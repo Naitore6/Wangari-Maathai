@@ -7,6 +7,11 @@ import mock_data  # fecth mock_data.py file in the same folder
 # Get the Java URL from the Environment (Render) OR default to Localhost
 JAVA_BASE_URL = os.environ.get("JAVA_API_URL", "http://localhost:9090")
 
+# Mock Data Switch
+# check the environment variable. If missing, default to False.
+use_mock_str = os.environ.get("USE_MOCK_DATA", "False")
+USE_MOCK_DATA = use_mock_str.lower() == "true"
+
 # Credentials
 USERNAME = os.environ.get("ADMIN_USERNAME", "0114440783")
 PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin")
