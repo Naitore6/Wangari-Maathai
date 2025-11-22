@@ -13,18 +13,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/", tags=["System Health"])
 def health_check():
     return {"status": "Online", "mode": "Mock Data Mode" if logic.USE_MOCK_DATA else "Live Production Mode"}
 
-@app.get("/api/v1/dashboard-stats")
+@app.get("/api/v1/dashboard-stats", tags=["Dashboard Analytics"])
 def get_dashboard_stats():
     """
     Returns the analytics JSON for the Admin Dashboard
     """
     return logic.calculate_analytics()
 
-@app.get("/api/v1/map-data")
+@app.get("/api/v1/map-data", tags=["Map Data"])
 def get_map_data():
     """
     Returns clean lat/lon data for the map
