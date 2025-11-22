@@ -12,8 +12,8 @@ JAVA_BASE_URL = os.environ.get("JAVA_API_URL", "http://localhost:9090")
 use_mock_str = os.environ.get("USE_MOCK_DATA", "False")
 USE_MOCK_DATA = use_mock_str.lower() == "true"
 
-# Credentials
-USERNAME = os.environ.get("ADMIN_USERNAME", "0114440783")
+# Credentials, Using those in the db
+USERNAME = os.environ.get("ADMIN_USERNAME", "0114440780")
 PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin")
 
 class JavaConnector:
