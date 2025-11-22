@@ -81,8 +81,14 @@ def calculate_analytics():
     df = connector.get_reports()
 
     if df.empty:
-        return {"error": "No data available"}
-
+        # Return a clean empty structure so UI doesn't break
+        return {
+            "summary": {"total_reports": 0, "verified_reports": 0},
+            "hotspots": {},
+            "crime_stats": {},
+            "recent_reports": []
+        }
+    
     # --- CLEANING & ANALYTICS ---
     if 'incidentType' in df.columns:
         df['incidentType'] = df['incidentType'].fillna("Unknown")
@@ -94,6 +100,16 @@ def calculate_analytics():
     else:
         df['location'] = "Unspecified"
 
+    if 'description' in df.columns:
+        df['description'] = df['description'].fillna("")
+
+    # Fix Numeric Columns 
+    if 'credibilityScore' in df.columns:
+        df['credibilityScore'] = df['credibilityScore'].fillna(0.0)
+    
+    # Final Safety Net: Replace ANY remaining NaNs with empty string
+    df = df.fillna("")
+
     # Metrics
     hotspots = df['location'].value_counts().head(5).to_dict()
     crime_stats = df['incidentType'].value_counts().to_dict()
@@ -101,6 +117,7 @@ def calculate_analytics():
     # Recent Reports (Safe Column Selection)
     cols = ['id', 'incidentType', 'location', 'description', 'createdOn', 'credibilityScore']
     available_cols = [c for c in cols if c in df.columns]
+    
     recent_reports = df[available_cols].tail(10).to_dict(orient='records')
 
     return {
